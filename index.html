@@ -1,0 +1,111 @@
+<!doctype html>
+<html >
+	<head>
+		<!--声明当前页面的编码格式 UTF-8（国际编码）gbk(中文简体)-->
+		<meta charset="utf-8"/>
+		<!--声明当前页面的三要素-->
+		<title>弹幕</title>
+		<meta name="Keywords" content="关键字">
+		<meta name="Description" content="描述">
+		 <!--样式 css -->
+		 <style type="text/css">
+		 *{margin:0;padding:0;}
+		html,body{width:100%; height:100%; overflow:hidden;}
+		body{background:url("images/bj.jpg");font-size:12px; font-family:"微软雅黑";}
+		.btn{padding:20px; text-decoration:none; background:#fff; border-radius:50%; box-shadow:3px 3px 12px #fff; position:absolute; bottom:40px; right:40px; cursor:pointer;}
+		.dm{width:100%; height:100%; background:rgba(0,0,0,0.5);position:absolute; top:0; left:0;}
+		.dm .screen{width:100%; height:100%; position:absolute; top:0; left:0;}
+		.dm .screen .s_show{position:relative;}
+		.dm .screen .s_show div{position:absolute; line-height:36px; font-size:22px; font-weight:500;}
+		.dm .screen .s_close{position:absolute; top:20px; right:20px;border-radius:50%; width:40px; height:40px; background:#009999;text-align:center; line-height:40px; color:#fff; font-size:18px;cursor:pointer; border:2px solid #fff;}
+		.dm .screen .s_close:hover{background:#00ff00;}
+/*send start*/
+		.dm .send{width:100%; height:76px; position:absolute; bottom:0; left:0px;background:rgba(0,0,0,0.5);}
+		.dm .send .s_com{width:100%; height:76px; line-height:76px; text-align:center;}
+		.dm .send .s_com .s_text{width:605px; height:36px; border:0; border-radius:3px 0 0 3px; font-size:16px;color:#666; line-height:36px; padding-left:40px;}
+		.dm .send .s_com .s_sub{width:100px; height:37px;background:#65c33d;border:1px solid #5bba32;font-size:14px; color:#Fff;  border-radius: 0 3px 3px 0;cursor:pointer;}
+
+		/*动画时间*/
+		.maginctime{-webkit-animation:space 1s;}
+		@-webkit-keyframes space{
+			0%{transform:scale(0.1) rotate(0deg) translate(-200%,0%);}
+			50%{transform:scale(1.2) rotate(180deg) translate(100%,0%);}
+			100%{transform:scale(1) rotate(360deg) translate(0%,0%);}
+		}
+		 </style>
+	 </head>
+ <body>
+	<a class="btn">喜欢我就加入我们吧！</a>
+	<div class="dm">
+		<!--screen start -->
+		<div class="screen">
+			<a class="s_close">X</a>
+			<div class="s_show">
+				<div>珂珂是真漂亮啊。</div>
+				<div>我是舞动的弹幕！</div>
+				<div>川川老师是我们所有人的男神 ！</div>
+				<div>今天天天气不错！</div>
+				<div>老师上课不错！</div>
+				<div>架构师好帅！</div>
+				<div>张学友是我们所有人的男神 ！</div>
+				<div>跟着我左手右手一个慢动作</div>
+				<div>一个一个梦飞出了天窗</div>
+			</div>
+		</div>
+		<!--send start -->
+		 <div class="send">
+			<div class="s_com">
+				<input type="text" class="s_text" placeholder="请输入发表的内容........"/>
+				<input type="button" id="send_sub" value="发表内容" class="s_sub"/>
+			</div>
+		 </div>
+	</div>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script>
+		$(function(){
+			// 调用初始化弹幕函数
+			init_screen();
+			//点击展示和点击关闭
+			$(".btn,.s_close").click(function(){
+				$(".dm").toggle("slow");
+			});
+			//添加内容
+			$("#send_sub").click(function(){
+				var text = $(".s_text").val();
+				var _label = $("<div class='maginctime'>"+text+"</div>");
+				$(".s_show").append(_label);
+				init_screen();
+			});
+			// 初始化弹幕
+			function init_screen(){
+				var _top = 0;
+				$(".s_show").find("div").show().each(function(){
+					var _left = $(window).width() -$(this).width();	// 浏览器的最大宽度，div的left值
+					var _height = $(window).height();	// 浏览器的最大高度
+					//console.log(_height);
+					_top = _top + 56 ;
+					if(_top >= _height-100){
+						 _top = 0;
+					}//  设置 文字 在的位置， 如果在。。。 就会回到 原点
+					$(this).css({left:_left,top:_top,color:getRandomColor()});
+					//一切是为了速度
+					var time = 15000;
+					if($(this).index() %2 == 0){
+						time = 30000;
+					}
+					//跑起来
+					$(this).animate({left:"-"+_left+"px"},time,function(){
+						$(this).remove();
+					});
+				});
+			}
+		});
+		//颜色的问题
+		function getRandomColor(){
+			return '#' + (function(h){
+				return new Array(7 - h.length).join("0") + h
+			})((Math.random() * 0x1000000 << 0).toString(16))
+		};
+	</script>
+ </body>
+</html>
